@@ -7,18 +7,25 @@ import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
 data class StaffDTO(
-        var id : Long,
+        var id: Long,
         var name: String,
-        var position: String,
+        var position: String?,
         var company: CompanyDTO,
+        var gender: String,
+        var location: String?,
         @JsonFormat(pattern = Constants.DATETIME_FORMAT)
         val createdAt: LocalDateTime,
         @JsonFormat(pattern = Constants.DATETIME_FORMAT)
         val updatedAt: LocalDateTime
 )
-
+data class FilterParamsStaffDTO(
+        val q: String?,
+        val companyId: Long?
+)
 data class RequestStaffDTO(
         @field:NotEmpty val name: String,
+        @field:NotEmpty val gender: String,
+        val location: String?,
         val position: String?,
-        @field:NotNull val company: Long
+        @field:NotNull val companyId: Long
 )

@@ -1,7 +1,6 @@
 package com.soramitsukhmer.contactmanagement.domain.model
 
-import com.soramitsukhmer.contactmanagement.api.request.CompanyDTO
-import com.soramitsukhmer.contactmanagement.api.request.RequestCompanyDTO
+import com.soramitsukhmer.contactmanagement.api.request.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
@@ -10,7 +9,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "companies")
 data class Company(
-        @Id @GeneratedValue(strategy = GenerationType.AUTO)
+        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id : Long = 0,
         @Column(name = "name")
         var name: String,
@@ -27,31 +26,47 @@ data class Company(
         @Column(name = "updated_at")
         var updatedAt: LocalDateTime = LocalDateTime.now()
 ){
+        @ManyToOne
+        @JoinColumn(name = "status_id")
+        lateinit var status: Status
+
         fun toDTO() = CompanyDTO(
-                id = id,
+                id = this.id,
                 name = name,
                 phone = phone,
                 webUrl = webUrl,
+                status = this.status.toDTO(),
                 createdAt = createdAt,
                 updatedAt = updatedAt
         )
 
-        fun updateCompany(reqCompanyDTO: RequestCompanyDTO) : Company{
-                return this.apply {
-                        name = reqCompanyDTO.name
-                        phone = reqCompanyDTO.phone
-                        webUrl = reqCompanyDTO.webUrl
-                }
-        }
+//        fun updateCompany(reqCompanyDTO: RequestCompanyDTO) : Company {
+//                return this.apply {
+//                        name = reqCompanyDTO.name
+//                        phone = reqCompanyDTO.phone
+//                        webUrl = reqCompanyDTO.webUrl
+//                        status = reqCompanyDTO.statusId
+//                        status = reqCompanyDTO.statusName
+//                }
+//        }
 
         companion object{
-                fun fromReqDTO(reqCompanyDTO: RequestCompanyDTO) : Company{
+                fun fromReqDTO(reqCompanyDTO: RequestCompanyDTO, status: Status) : Company {
                         return Company(
                                 name = reqCompanyDTO.name,
                                 phone = reqCompanyDTO.phone,
                                 webUrl = reqCompanyDTO.webUrl,
                                 privatePassPhrase = "SORA"
-                        )
+                        ).apply { this.status = status }
+                }
+                fun fromReqDTO(dto: UpdateCompanyDTO, origin: Company, status: Status) : Company {
+                        return Company(
+                                id = origin.id,
+                                name = dto.name,
+                                phone = dto.phone,
+                                webUrl = dto.webUrl,
+                                privatePassPhrase = "SORA"
+                        ).apply { this.status = status }
                 }
         }
 }
