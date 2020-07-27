@@ -8,8 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest
 class ContactManagementApplicationTests {
 
 	@Test
-	fun createTest() {
-		assert
+	fun contextLoads() {
+
 	}
 
 }

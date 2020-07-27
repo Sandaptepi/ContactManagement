@@ -18,6 +18,10 @@ data class CompanyDTO(
         val updatedAt: LocalDateTime
 )
 
+data class CompanyNameDTO(
+        var name: String
+)
+
 data class CompanyPageableDTO(
         val id: Long,
         val name: String,
@@ -36,14 +40,7 @@ data class FilterParamsCompanyDTO(
 )
 
 data class RequestCompanyDTO(
-        @field:NotEmpty val name: String,
-        @field:NotEmpty val phone: String,
-        val webUrl: String?,
-        @field:NotNull val statusId: Long
-)
-
-data class UpdateCompanyDTO(
-        @field:NotEmpty val name: String,
+        @field:NotEmpty var name: String,
         @field:NotEmpty val phone: String,
         val webUrl: String?,
         @field:NotNull val statusId: Long

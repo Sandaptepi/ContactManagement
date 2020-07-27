@@ -12,18 +12,16 @@ import javax.servlet.http.HttpServletRequest
 @ControllerAdvice
 class ControllerAdvice {
     val log : Logger = LoggerFactory.getLogger(this.javaClass)
-    @ExceptionHandler (IDNotFoundException::class)
-    fun iDNotFoundException(request: HttpServletRequest,e : IDNotFoundException?) : ResponseEntity <ErrorResponse>{
-        log.error("IDNotFoundException $e")
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse(errorMessage = e?.msg))
-
+    @ExceptionHandler (FieldNotFoundException::class)
+    fun iDNotFoundException(request: HttpServletRequest,e : FieldNotFoundException?) : ResponseEntity <ErrorResponse>{
+        log.error("${FieldNotFoundException::class.simpleName} $e")
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse(errorMessage = e?.message + ErrorCode.IS_NOTFOUND.message))
     }
 
     @ExceptionHandler (RecordAlreadyExistException::class)
     fun recordAlreadyExistException(request: HttpServletRequest,e : RecordAlreadyExistException?) : ResponseEntity <ErrorResponse>{
         log.error("RecordAlreadyExistException $e")
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse(errorMessage = e?.msg))
-
     }
 
     @ExceptionHandler (Exception::class)

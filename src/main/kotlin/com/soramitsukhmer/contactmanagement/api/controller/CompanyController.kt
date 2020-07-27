@@ -1,7 +1,6 @@
 package com.soramitsukhmer.contactmanagement.api.controller
 
 import com.soramitsukhmer.contactmanagement.api.request.*
-import com.soramitsukhmer.contactmanagement.domain.model.ErrorCompanyException
 import com.soramitsukhmer.contactmanagement.repository.CompanyRepository
 import com.soramitsukhmer.contactmanagement.service.CompanyService
 import org.springframework.data.domain.Pageable
@@ -32,21 +31,12 @@ class CompanyController(
     }
 
     @PutMapping("/{id}")
-    fun updateCompany(@PathVariable id: Long, @Valid @RequestBody dto: UpdateCompanyDTO) :
+    fun updateCompany(@PathVariable id: Long, @Valid @RequestBody dto: RequestCompanyDTO) :
             ResponseEntity<CompanyDTO>{
         return ResponseEntity.ok(companyService.updateCompany(id, dto))
     }
     @DeleteMapping("/{id}")
-    fun deleteCompanyId(@PathVariable("id")id: Long): ResponseEntity<List<CompanyDTO>> {
-        val company = companyRepository.findById(id).orElseThrow{
-                throw RuntimeException("CompanyId[$id] not found")
-        }
-//        companyRepository.delete(company)
-        try {
-            companyRepository.delete(company)
-        } catch (e: Exception) {
-            throw ErrorCompanyException()
-        }
-        return ResponseEntity.ok(companyService.listAllCompanies())
+    fun deleteCompanyId(@PathVariable("id")id: Long): ResponseEntity<String> {
+        return ResponseEntity.ok(companyService.deleteCompany(id))
     }
 }

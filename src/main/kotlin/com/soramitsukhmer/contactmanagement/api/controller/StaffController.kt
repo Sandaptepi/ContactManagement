@@ -42,6 +42,13 @@ class StaffController (
             ResponseEntity<StaffDTO> {
         return ResponseEntity.ok(staffService.updateStaff(id,requestStaffDTO))
     }
+
+    @DeleteMapping("/{id}")
+    fun deleteStaffId(@PathVariable("id")id: Long):
+            ResponseEntity<String> {
+        staffRepository.deleteById(id)
+        return ResponseEntity.ok(staffService.deleteStaff(id))
+    }
 //    @DeleteMapping("/{id}")
 //    fun deleteStaffId(@RequestParam filterParamsStaffDTO: FilterParamsStaffDTO?, @PathVariable("id")id: Long,
 //                      @RequestBody requestStaffDTO: RequestStaffDTO, pageable: Pageable):

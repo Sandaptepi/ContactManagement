@@ -1,8 +1,12 @@
 package com.soramitsukhmer.contactmanagement.service
 
+import com.soramitsukhmer.contactmanagement.api.exception.FieldNotFoundException
 import com.soramitsukhmer.contactmanagement.api.request.*
 import com.soramitsukhmer.contactmanagement.api.response.toPageResponse
+import com.soramitsukhmer.contactmanagement.domain.model.Company
 import com.soramitsukhmer.contactmanagement.domain.model.Company.Companion.fromReqDTO
+import com.soramitsukhmer.contactmanagement.domain.model.ErrorCompanyException
+import com.soramitsukhmer.contactmanagement.domain.model.Status
 import com.soramitsukhmer.contactmanagement.domain.spec.CompanySpec
 import com.soramitsukhmer.contactmanagement.repository.CompanyRepository
 import com.soramitsukhmer.contactmanagement.repository.StatusRepository
@@ -37,7 +41,7 @@ class CompanyService(
 
     fun getCompany(id: Long) : CompanyDTO{
         return companyRepository.findById(id).orElseThrow{
-            throw RuntimeException("CompanyId[$id] is not found.")
+            throw FieldNotFoundException(Company::id.name, "$id")
         }.toDTO()
     }
 
@@ -48,19 +52,23 @@ class CompanyService(
         return companyRepository.save(newCompany).toDTO()
     }
 
-//    fun updateCompany(id: Long, dto: RequestCompanyDTO) : CompanyDTO{
-//        val company = companyRepository.findById(id).orElseThrow{
-//            throw RuntimeException("CompanyId[$id] is not found.")
-//        }.updateCompany(reqCompanyDTO)
-//        return companyRepository.save(company).toDTO()
-//    }
-    fun updateCompany(id: Long, dto: UpdateCompanyDTO) : CompanyDTO{
+    fun updateCompany(id: Long, dto: RequestCompanyDTO) : CompanyDTO{
         val status = statusRepository.findById(dto.statusId)
-                .orElseThrow { throw RuntimeException("statusId[$id] is not found.") }
+                .orElseThrow { throw FieldNotFoundException(Status::id.name, "$id") }
         val originCompany = companyRepository.findById(id).get()
         val newCompany = fromReqDTO(dto,originCompany, status)
         companyValidationService.validateUniquePhone(newCompany.id,newCompany.phone,newCompany.name)
         return companyRepository.save(newCompany).toDTO()
     }
 
-}
+    fun deleteCompany (id: Long) : String {
+        val company = companyRepository.findById(id).orElseThrow{
+            throw FieldNotFoundException(Company::id.name, "$id")
+        }
+        try {
+            companyRepository.delete(company)
+        } catch (e: Exception) {
+            throw ErrorCompanyException()
+        }
+      return "DELETED"
+}}

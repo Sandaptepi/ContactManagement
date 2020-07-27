@@ -35,7 +35,7 @@ data class Staff(
             id = id,
             name = name,
             position = position,
-            company = company.toDTO(),
+            company = company.toDto(),
             gender = gender,
             location = location,
             createdAt = createdAt,
@@ -52,12 +52,22 @@ data class Staff(
     }
 
     companion object{
-        fun fromDTO(requestStaffDTO: RequestStaffDTO, company: Company) : Staff {
+        fun fromDTO(requestStaffDTO: RequestStaffDTO,company: Company) : Staff {
             return Staff(
                     name = requestStaffDTO.name,
                     position = requestStaffDTO.position,
                     gender = requestStaffDTO.gender,
                     location = requestStaffDTO.location
+            ).apply {
+                this.company = company
+            }}
+        fun fromDTO(requestStaffDTO: RequestStaffDTO, origin: Staff,company: Company) : Staff {
+            return Staff(
+                    id = origin.id,
+                    name = requestStaffDTO.name,
+                    gender = requestStaffDTO.gender,
+                    location = requestStaffDTO.location,
+                    position = requestStaffDTO.position
             ).apply {
                 this.company = company
             }

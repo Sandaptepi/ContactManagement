@@ -9,7 +9,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "companies")
 data class Company(
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Id @GeneratedValue(strategy = GenerationType.AUTO)
         var id : Long = 0,
         @Column(name = "name")
         var name: String,
@@ -31,24 +31,25 @@ data class Company(
         lateinit var status: Status
 
         fun toDTO() = CompanyDTO(
-                id = this.id,
+                id = id,
                 name = name,
                 phone = phone,
                 webUrl = webUrl,
-                status = this.status.toDTO(),
+                status = status.toDTO(),
                 createdAt = createdAt,
                 updatedAt = updatedAt
         )
+        fun toDto() = CompanyNameDTO(
+                name = this.name
+        )
 
-//        fun updateCompany(reqCompanyDTO: RequestCompanyDTO) : Company {
-//                return this.apply {
-//                        name = reqCompanyDTO.name
-//                        phone = reqCompanyDTO.phone
-//                        webUrl = reqCompanyDTO.webUrl
-//                        status = reqCompanyDTO.statusId
-//                        status = reqCompanyDTO.statusName
-//                }
-//        }
+        fun updateCompany(reqCompanyDTO: RequestCompanyDTO) : Company {
+                return this.apply {
+                        name = reqCompanyDTO.name
+                        phone = reqCompanyDTO.phone
+                        webUrl = reqCompanyDTO.webUrl
+                }
+        }
 
         companion object{
                 fun fromReqDTO(reqCompanyDTO: RequestCompanyDTO, status: Status) : Company {
@@ -59,7 +60,7 @@ data class Company(
                                 privatePassPhrase = "SORA"
                         ).apply { this.status = status }
                 }
-                fun fromReqDTO(dto: UpdateCompanyDTO, origin: Company, status: Status) : Company {
+                fun fromReqDTO(dto: RequestCompanyDTO, origin: Company, status: Status) : Company {
                         return Company(
                                 id = origin.id,
                                 name = dto.name,
