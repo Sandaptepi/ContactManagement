@@ -17,6 +17,9 @@ class StaffServiceTest(
     @Autowired
     lateinit var companyRepository: CompanyRepository
 
+    @Autowired
+    lateinit var companyService: CompanyService
+
     @Test
     fun testCreateStaff(){
         companyRepository.save(Company(1,"Sora","12345678","sdfghjkl;","ertyui"))
@@ -42,5 +45,13 @@ class StaffServiceTest(
         val listAllStaffs = staffService.listAllStaffs(null,PageRequest.of(0,5))
         assertTrue("List all Staff",listAllStaffs.content.isNotEmpty())
         staffService.deleteStaff(createdStaff.id)
+    }
+    @Test
+    fun testDeleteByIDStaff() {
+        companyRepository.save(Company(1,"Sora","12345678","sdfghjkl;","ertyui"))
+        val createdStaff = staffService.addStaff(StaffServiceTestHelper.validStaffReqDTO)
+        staffService.deleteStaff(createdStaff.id)
+        val listAllStaffs = staffService.listAllStaffs(null,PageRequest.of(0,5))
+        assertTrue("Deleted Staff by id",listAllStaffs.content.isEmpty())
     }
 }
