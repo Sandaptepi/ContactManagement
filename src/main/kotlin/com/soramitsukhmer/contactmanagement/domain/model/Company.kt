@@ -1,10 +1,13 @@
 package com.soramitsukhmer.contactmanagement.domain.model
 
-import com.soramitsukhmer.contactmanagement.api.request.*
+import com.soramitsukhmer.contactmanagement.api.request.CompanyDTO
+import com.soramitsukhmer.contactmanagement.api.request.CompanyNameDTO
+import com.soramitsukhmer.contactmanagement.api.request.RequestCompanyDTO
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 import javax.persistence.*
+
 
 @Entity
 @Table(name = "companies")
@@ -31,6 +34,15 @@ data class Company(
         @JoinColumn(name = "status_id")
         lateinit var status: Status
 
+//        @ManyToMany
+//        @JoinTable(name="company_location", joinColumns = [JoinColumn(name="company_id")],
+//        inverseJoinColumns = [JoinColumn(name="location_id")])
+//        lateinit var companyLocation: List<Location>
+
+        @ManyToMany(mappedBy = "companyLocation")
+        lateinit var locations: List<Location>
+
+
         fun toDTO() = CompanyDTO(
                 id = id,
                 name = name,
@@ -43,15 +55,6 @@ data class Company(
         fun toDto() = CompanyNameDTO(
                 name = this.name
         )
-
-        fun updateCompany(reqCompanyDTO: RequestCompanyDTO) : Company {
-                return this.apply {
-                        name = reqCompanyDTO.name
-                        phone = reqCompanyDTO.phone
-                        webUrl = reqCompanyDTO.webUrl
-                }
-        }
-
         companion object{
                 fun fromReqDTO(reqCompanyDTO: RequestCompanyDTO, status: Status) : Company {
                         return Company(

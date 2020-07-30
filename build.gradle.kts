@@ -23,12 +23,11 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("com.oracle.ojdbc:ojdbc8:19.3.0.0")
-//	runtimeOnly("com.oracle.ojdbc:ojdbc8:19.3.0.0")
-//	implementation("com.h2database:h2")
+	runtimeOnly("com.oracle.ojdbc:ojdbc8:19.3.0.0")
+	implementation("com.h2database:h2")
 	implementation ("com.github.javafaker:javafaker:1.0.2")
 	implementation("org.liquibase:liquibase-core")
-	runtimeOnly("com.h2database:h2")
+//	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}

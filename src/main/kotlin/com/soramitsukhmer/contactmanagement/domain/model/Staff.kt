@@ -41,16 +41,6 @@ data class Staff(
             createdAt = createdAt,
             updatedAt = updatedAt
     )
-    fun updateStaff(requestStaffDTO: RequestStaffDTO) : Staff {
-        return this.apply {
-            name = requestStaffDTO.name
-            position = requestStaffDTO.position
-            gender = requestStaffDTO.gender
-            location = requestStaffDTO.location
-            this.company = company
-        }
-    }
-
     companion object{
         fun fromDTO(requestStaffDTO: RequestStaffDTO,company: Company) : Staff {
             return Staff(

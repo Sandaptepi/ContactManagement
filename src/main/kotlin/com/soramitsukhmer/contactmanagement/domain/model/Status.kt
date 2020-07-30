@@ -15,12 +15,5 @@ data class Status (
     fun toDTO() : StatusDTO = StatusDTO(
             name = this.name
     )
-    companion object {
-//        fun fromDto(dto: UpdateCompanyDTO, origin: Status): Status {
-//            return Status(
-//                    id = origin.id,
-//                    name = dto.statusName
-//            )
-//        }
-    }
+
 }

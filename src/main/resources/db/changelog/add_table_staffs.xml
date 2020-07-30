@@ -33,7 +33,7 @@
     <!--FOREIGN KEY-->
     <changeSet author="sandap" id="add-staff-foreign-keys">
         <addForeignKeyConstraint baseTableName="staffs" baseColumnNames="company_id"
-                                 constraintName="fk_company_id"
+                                 constraintName="fk_company_staff_id"
                                  referencedColumnNames="id"
                                  referencedTableName="companies"/>
 

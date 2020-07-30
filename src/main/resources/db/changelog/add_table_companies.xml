@@ -29,6 +29,9 @@
             <column name="status_id" type="NUMBER(19, 0)">
                 <constraints nullable="false" foreignKeyName="fk_status_id"/>
             </column>
+            <column name="location_id" type="NUMBER(19, 0)">
+                <constraints nullable="false" foreignKeyName="fk_location_id"/>
+            </column>
             <column name="created_at" type="TIMESTAMP(6)"/>
             <column name="created_by" type="NUMBER(19, 0)"/>
             <column name="updated_at" type="TIMESTAMP(6)"/>
@@ -43,6 +46,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
     </changeSet>
 
     <!--FOREIGN KEY-->
@@ -52,5 +56,9 @@
                                  referencedColumnNames="id"
                                  referencedTableName="status"/>
 
+        <addForeignKeyConstraint baseTableName="companies" baseColumnNames="location_id"
+                                 constraintName="fk_company_location_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="locations"/>
     </changeSet>
 </databaseChangeLog>

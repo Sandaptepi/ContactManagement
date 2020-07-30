@@ -1,0 +1,29 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!--SEQUENCE-->
+    <changeSet author="sandap" id="create-location-table-sequences">
+        <createSequence sequenceName="SEQ_LOCATIONS" startValue="1" incrementBy="50"/>
+    </changeSet>
+    <!--TABLE-->
+    <changeSet id="create_table_locations" author="sandap">
+        <createTable tableName="locations">
+            <column name="id" type="NUMERIC(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_locations"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <!--FOREIGN KEY-->
+    <changeSet author="sandap" id="add-location-foreign-keys">
+<!--        <addForeignKeyConstraint baseTableName="locations" baseColumnNames="company_id"-->
+<!--                                 constraintName="fk_location_company_id"-->
+<!--                                 referencedColumnNames="id"-->
+<!--                                 referencedTableName="companies"/>-->
+
+    </changeSet>
+</databaseChangeLog>
