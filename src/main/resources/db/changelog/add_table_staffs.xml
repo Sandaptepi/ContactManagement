@@ -1,0 +1,41 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!--SEQUENCE-->
+    <changeSet author="sandap" id="create-staff-table-sequences">
+        <createSequence sequenceName="SEQ_STAFFS" startValue="10" incrementBy="1"/>
+    </changeSet>
+    <!--TABLE-->
+    <changeSet id="create_table_staffs" author="sandap">
+        <createTable tableName="staffs">
+            <column name="id" type="NUMERIC(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_staffs"/>
+            </column>
+            <column name="gender" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="position" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="NUMERIC(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <!--FOREIGN KEY-->
+    <changeSet author="sandap" id="add-staff-foreign-keys">
+        <addForeignKeyConstraint baseTableName="staffs" baseColumnNames="company_id"
+                                 constraintName="fk_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="companies"/>
+
+    </changeSet>
+</databaseChangeLog>

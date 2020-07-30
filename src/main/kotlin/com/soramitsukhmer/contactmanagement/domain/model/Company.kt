@@ -9,7 +9,8 @@ import javax.persistence.*
 @Entity
 @Table(name = "companies")
 data class Company(
-        @Id @GeneratedValue(strategy = GenerationType.AUTO)
+        @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqCompanies")
+        @SequenceGenerator(name = "seqCompanies", sequenceName = "SEQ_COMPANIES", initialValue = 1)
         var id : Long = 0,
         @Column(name = "name")
         var name: String,

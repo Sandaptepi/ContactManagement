@@ -1,0 +1,56 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!--SEQUENCE-->
+    <changeSet author="sandap" id="create-company-table-sequences">
+        <createSequence sequenceName="SEQ_COMPANIES" startValue="1" incrementBy="50"/>
+    </changeSet>
+
+    <!--TABLE-->
+    <changeSet author="sandap" id="create-company-tables">
+        <createTable tableName="companies">
+            <column name="id" type="NUMBER(19, 0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_company"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="web_url" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="private_pass_phrase" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_id" type="NUMBER(19, 0)">
+                <constraints nullable="false" foreignKeyName="fk_status_id"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6)"/>
+            <column name="created_by" type="NUMBER(19, 0)"/>
+            <column name="updated_at" type="TIMESTAMP(6)"/>
+            <column name="updated_by" type="NUMBER(19, 0)"/>
+        </createTable>
+
+        <createTable tableName="status">
+            <column name="id" type="NUMBER(19, 0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_status"/>
+            </column>
+            <column name="name" value="2" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--FOREIGN KEY-->
+    <changeSet author="sandap" id="add-company-foreign-keys">
+        <addForeignKeyConstraint baseTableName="companies" baseColumnNames="status_id"
+                                 constraintName="fk_company_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="status"/>
+
+    </changeSet>
+</databaseChangeLog>
