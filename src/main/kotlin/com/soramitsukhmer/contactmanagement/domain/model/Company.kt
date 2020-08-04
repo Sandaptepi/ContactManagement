@@ -14,7 +14,7 @@ import javax.persistence.*
 data class Company(
         @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqCompanies")
         @SequenceGenerator(name = "seqCompanies", sequenceName = "SEQ_COMPANIES", initialValue = 1)
-        var id : Long = 0,
+        var id: Long = 0,
         @Column(name = "name")
         var name: String,
         @Column(name = "phone")
@@ -34,14 +34,16 @@ data class Company(
         @JoinColumn(name = "status_id")
         lateinit var status: Status
 
-//        @ManyToMany
+//        @ManyToMany(cascade = [CascadeType.ALL])
 //        @JoinTable(name="company_location", joinColumns = [JoinColumn(name="company_id")],
-//        inverseJoinColumns = [JoinColumn(name="location_id")])
-//        lateinit var companyLocation: List<Location>
+//                inverseJoinColumns = [JoinColumn(name="location_id")])
+//        lateinit var locations: List<Location>
 
-        @ManyToMany(mappedBy = "companyLocation")
-        lateinit var locations: List<Location>
+//        @ManyToMany(mappedBy = "companies")
+//        lateinit var location: List<Location>
 
+        @OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
+        lateinit var companyLocations: List<CompanyLocation>
 
         fun toDTO() = CompanyDTO(
                 id = id,
@@ -50,7 +52,8 @@ data class Company(
                 webUrl = webUrl,
                 status = status.toDTO(),
                 createdAt = createdAt,
-                updatedAt = updatedAt
+                updatedAt = updatedAt,
+                locations = companyLocations.map { it.toLocationDTO() }
         )
         fun toDto() = CompanyNameDTO(
                 name = this.name

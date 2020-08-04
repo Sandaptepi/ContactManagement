@@ -12,6 +12,7 @@ data class CompanyDTO(
         val phone: String,
         val webUrl: String?,
         val status: StatusDTO,
+        val locations: List<LocationDTO>,
         @JsonFormat(pattern = Constants.DATETIME_FORMAT)
         val createdAt: LocalDateTime,
         @JsonFormat(pattern = Constants.DATETIME_FORMAT)
@@ -43,5 +44,15 @@ data class RequestCompanyDTO(
         @field:NotEmpty var name: String,
         @field:NotEmpty val phone: String,
         val webUrl: String?,
-        @field:NotNull val statusId: Long
+        @field:NotNull val statusId: Long,
+        @field:NotNull var locations: List<Long>
+)
+
+data class RequestCompanyWithStaffDTO(
+        @field:NotEmpty var name: String,
+        @field:NotEmpty var phone: String,
+        var webUrl: String?,
+        @field:NotNull var status: Long,
+        @field:NotNull var locations: List<Long>,
+        @field:NotNull var staffs: List<RequestStaffDTO>
 )

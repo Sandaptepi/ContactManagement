@@ -1,6 +1,5 @@
 package com.soramitsukhmer.contactmanagement.service.validation
 
-import com.soramitsukhmer.contactmanagement.api.exception.RecordAlreadyExistException
 import com.soramitsukhmer.contactmanagement.repository.CompanyRepository
 import org.springframework.stereotype.Service
 
@@ -8,15 +7,15 @@ import org.springframework.stereotype.Service
 class CompanyValidationService(
         val companyRepository: CompanyRepository
 ) {
-    fun validateUniquePhone(companyId: Long?, phone: String,name: String){
+    fun validateUniquePhoneAndName(companyId: Long?, phone: String,name: String){
         companyId?.let {
             if(companyRepository.existsCompanyByPhoneAndNameAndIdIsNot(phone, name ,companyId)){
-                throw RuntimeException("[Phone:$phone] is already existed.")
+                throw RuntimeException("[Phone:$phone] or [Name:$name] is already existed.")
             }
             return
         }
         if(companyRepository.existsCompanyByPhoneOrName(phone,name)){
-            throw RuntimeException("[Phone:$phone] must be unique")
+            throw RuntimeException("[Phone:$phone] or [Name:$name] must be unique")
         }
     }
 

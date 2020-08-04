@@ -9,6 +9,7 @@ object CompanyServiceTestHelper {
             name = faker.funnyName().name(),
             phone = faker.phoneNumber().cellPhone(),
             webUrl = faker.internet().url(),
-            statusId = 1
+            statusId = 1,
+            locations = [1,2]
     )
 }

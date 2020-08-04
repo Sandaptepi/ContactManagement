@@ -22,7 +22,7 @@ class StaffServiceTest(
 
     @Test
     fun testCreateStaff(){
-        companyRepository.save(Company(1,"Sora","12345678","sdfghjkl;","ertyui"))
+        companyRepository.save(Company(1, "Sora", "12345678", "sdfghjkl;", "ertyui", listOf(math, computer, economics)))
         val createdStaff = staffService.addStaff(StaffServiceTestHelper.validStaffReqDTO)
         assertTrue("Created Company Is Not Null", true)
         assertEquals("Test if gender is difference", StaffServiceTestHelper.validStaffReqDTO.gender, createdStaff.gender)
@@ -31,7 +31,7 @@ class StaffServiceTest(
 
     @Test
     fun testUpdateStaff(){
-        companyRepository.save(Company(1,"Sora","12345678","sdfghjkl;","ertyui"))
+        companyRepository.save(Company(1, "Sora", "12345678", "sdfghjkl;", "ertyui", listOf(math, computer, economics)))
         val createdStaff = staffService.addStaff(StaffServiceTestHelper.validStaffReqDTO)
         var newUpdateRequest = StaffServiceTestHelper.validStaffReqDTO
         newUpdateRequest.name = "NEW"
@@ -40,7 +40,7 @@ class StaffServiceTest(
     }
     @Test
     fun testListAllStaff() {
-        companyRepository.save(Company(1,"Sora","12345678","sdfghjkl;","ertyui"))
+        companyRepository.save(Company(1, "Sora", "12345678", "sdfghjkl;", "ertyui", listOf(math, computer, economics)))
         val createdStaff = staffService.addStaff(StaffServiceTestHelper.validStaffReqDTO)
         val listAllStaffs = staffService.listAllStaffs(null,PageRequest.of(0,5))
         assertTrue("List all Staff",listAllStaffs.content.isNotEmpty())
@@ -48,7 +48,7 @@ class StaffServiceTest(
     }
     @Test
     fun testDeleteByIDStaff() {
-        companyRepository.save(Company(1,"Sora","12345678","sdfghjkl;","ertyui"))
+        companyRepository.save(Company(1, "Sora", "12345678", "sdfghjkl;", "ertyui", listOf(math, computer, economics)))
         val createdStaff = staffService.addStaff(StaffServiceTestHelper.validStaffReqDTO)
         staffService.deleteStaff(createdStaff.id)
         val listAllStaffs = staffService.listAllStaffs(null,PageRequest.of(0,5))
