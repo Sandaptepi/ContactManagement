@@ -29,6 +29,18 @@ class CompanyService(
         }
     }
 
+//    fun findAllCompaniesByLocationId(locationId: Long): List<Company> {
+//        val findById = locationRepository.findById(locationId).orElseThrow{
+//            RuntimeException("ID Not Found")
+//        }
+//        val companies = findById.companies
+//        ////  Update Location
+//        /**
+//         * + companyId -> Company Object, company.locations
+//         * + new Location/ existed locationId(s) -> Location Object(s)
+//         */
+//    }
+
     fun listAllCompanies(@Valid filterParamsCompanyDTO: FilterParamsCompanyDTO, pageable: Pageable)
             : PageResponse<CompanyDTO> {
         val querySpec = filterParamsCompanyDTO.q?.let { CompanySpec.genSearchSpec(it.toLowerCase()) }
@@ -64,14 +76,14 @@ class CompanyService(
         createdCompany.companyLocations = locationRepository.findAllById(reqCompanyDTO.locations).map {
             val companyLocation = CompanyLocation().apply {
                 this.company = createdCompany
-                this.location = it
+                this.locations = it
             }
             companyLocationRepository.save(companyLocation)
         }
         return createdCompany.toDTO()
     }
 
-    fun createCompanyWithStaffs(req: RequestCompanyWithStaffDTO): String {
+    fun createCompanyWithStaffs(req: RequestCompanyWithStaffDTO): CompanyDTO {
         val companyDTO = RequestCompanyDTO(
                 name = req.name,
                 phone = req.phone,
@@ -82,22 +94,44 @@ class CompanyService(
         val createdCompany = createCompany(companyDTO)
         req.staffs.map { staffDTO ->
             val company = companyRepository.findById(createdCompany.id).orElseThrow {
-                throw ErrorCompanyException()
+                throw FieldNotFoundException(Company::id.name ,"${createdCompany.id}")
             }
             val staff = Staff.fromDTO(staffDTO, company)
             staffRepository.save(staff)
         }
-        return createdCompany.name
+        return createdCompany
     }
 
+//
+//    fun updateCompany(id: Long, dto: RequestCompanyDTO) : CompanyDTO{
+//        val status = statusRepository.findById(dto.statusId)
+//                .orElseThrow { throw FieldNotFoundException(Status::id.name, "$id") }
+//        val originCompany = companyRepository.findById(id).get()
+//        val newCompany = fromReqDTO(dto,originCompany, status)
+//        companyValidationService.validateUniquePhoneAndName(newCompany.id,newCompany.phone,newCompany.name)
+//        return companyRepository.save(newCompany).toDTO()
+//    }
 
-    fun updateCompany(id: Long, dto: RequestCompanyDTO) : CompanyDTO{
-        val status = statusRepository.findById(dto.statusId)
-                .orElseThrow { throw FieldNotFoundException(Status::id.name, "$id") }
-        val originCompany = companyRepository.findById(id).get()
-        val newCompany = fromReqDTO(dto,originCompany, status)
-        companyValidationService.validateUniquePhoneAndName(newCompany.id,newCompany.phone,newCompany.name)
-        return companyRepository.save(newCompany).toDTO()
+    fun updateCompany(id: Long, reqCompanyDTO: RequestCompanyDTO) : CompanyDTO{
+        val status = statusRepository.findById(reqCompanyDTO.statusId).orElseThrow{
+            throw FieldNotFoundException(Status::id.name, "$reqCompanyDTO.status")
+        }
+        val company = companyRepository.findById(id).orElseThrow{
+            throw FieldNotFoundException(Company::id.name, "$id")
+        }.updateCompany(reqCompanyDTO, status)
+
+        companyLocationRepository.deleteAll(company.companyLocations)
+        locationRepository.findAllById(reqCompanyDTO.locations).map {
+            val companyLocation = CompanyLocation().apply {
+                this.company = company
+                this.locations = it
+            }
+            companyLocationRepository.save(companyLocation)
+        }
+
+        companyValidationService.validateUniquePhoneAndName(company.id, company.phone, company.name)
+
+        return companyRepository.save(company).toDTO()
     }
 
     fun deleteCompany (id: Long) : String {
@@ -110,4 +144,5 @@ class CompanyService(
             throw ErrorCompanyException()
         }
       return "DELETED"
-}}
+        }
+}

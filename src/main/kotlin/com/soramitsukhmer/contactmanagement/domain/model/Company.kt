@@ -58,6 +58,14 @@ data class Company(
         fun toDto() = CompanyNameDTO(
                 name = this.name
         )
+        fun updateCompany(reqCompanyDTO: RequestCompanyDTO, status: Status) : Company{
+                return this.apply {
+                        name = reqCompanyDTO.name
+                        phone = reqCompanyDTO.phone
+                        webUrl = reqCompanyDTO.webUrl
+                        this.status = status
+                }
+        }
         companion object{
                 fun fromReqDTO(reqCompanyDTO: RequestCompanyDTO, status: Status) : Company {
                         return Company(
@@ -67,14 +75,15 @@ data class Company(
                                 privatePassPhrase = "SORA"
                         ).apply { this.status = status }
                 }
-                fun fromReqDTO(dto: RequestCompanyDTO, origin: Company, status: Status) : Company {
+                fun fromReqDTO(dto: RequestCompanyDTO, origin: Company, status: Status, companyLocations: List<CompanyLocation>) : Company {
                         return Company(
                                 id = origin.id,
                                 name = dto.name,
                                 phone = dto.phone,
                                 webUrl = dto.webUrl,
                                 privatePassPhrase = "SORA"
-                        ).apply { this.status = status }
+                        ).apply { this.status = status
+                        this.companyLocations = companyLocations}
                 }
         }
 }

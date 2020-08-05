@@ -1,5 +1,6 @@
 package com.soramitsukhmer.contactmanagement.domain.model
 
+import com.soramitsukhmer.contactmanagement.api.request.RequestCompanyStaffDTO
 import com.soramitsukhmer.contactmanagement.api.request.RequestStaffDTO
 import com.soramitsukhmer.contactmanagement.api.request.StaffDTO
 import org.hibernate.annotations.CreationTimestamp
@@ -48,6 +49,16 @@ data class Staff(
                     position = requestStaffDTO.position,
                     gender = requestStaffDTO.gender,
                     location = requestStaffDTO.location
+            ).apply {
+                this.company = company
+            }}
+
+        fun fromDTO(requestCompanyStaffDTO: RequestCompanyStaffDTO,company: Company) : Staff {
+            return Staff(
+                    name = requestCompanyStaffDTO.name,
+                    position = requestCompanyStaffDTO.position,
+                    gender = requestCompanyStaffDTO.gender,
+                    location = requestCompanyStaffDTO.location
             ).apply {
                 this.company = company
             }}

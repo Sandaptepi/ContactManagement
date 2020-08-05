@@ -13,10 +13,10 @@ data class Location(
         @Column(name = "name")
         var name: String
 ){
-//        @ManyToMany(cascade = [CascadeType.ALL])
-//        @JoinTable(name="company_location", joinColumns = [JoinColumn(name="company_id")],
-//                inverseJoinColumns = [JoinColumn(name="location_id")])
-//        lateinit var companies: List<Company>
+        @ManyToMany(cascade = [CascadeType.ALL])
+        @JoinTable(name="company_location", joinColumns = [JoinColumn(name="company_id")],
+                inverseJoinColumns = [JoinColumn(name="location_id")])
+        lateinit var companies: List<Company>
 
         fun toDTO()=LocationDTO(
                 id = this.id,

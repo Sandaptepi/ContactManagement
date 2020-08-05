@@ -25,10 +25,10 @@ data class CompanyLocation(
 
         @ManyToOne
         @JoinColumn(name = "location_id")
-        lateinit var location: Location
+        lateinit var locations: Location
 
         fun toLocationDTO() = LocationDTO(
-                id = this.location.id,
-                name = this.location.name
+                id = this.locations.id,
+                name = this.locations.name
         )
 }

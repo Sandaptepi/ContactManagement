@@ -22,25 +22,13 @@ class CompanyController(
     fun getCompany(@PathVariable id: Long) : Any{
         return ok(companyService.getCompany(id))
     }
-
-//    @GetMapping("/save")
-//    fun save(): String {
-//
-//        val PP = Location(1, "PP")
-//        val SR = Location(2, "SR")
-//        val BT = Location(3, "BT")
-//
-//        val sora = Company(1, "Sora","2345678","sdfghjk","cvghj",listOf(PP,SR,BT))
-//        val mitsu = Company(2, "Mitsu","2345678","sdfghjk","cvghj",listOf(SR,BT))
-//
-//        companyRepository.saveAll(listOf(sora, mitsu))
-//
-//        return "Done!"
-//    }
-
     @PostMapping
     fun createCompany(@Valid @RequestBody requestCompanyDTO: RequestCompanyDTO) : ResponseEntity<CompanyDTO> {
         return ResponseEntity.ok(companyService.createCompany(requestCompanyDTO))
+    }
+    @PostMapping("/companyStaffs")
+    fun createCompanyWithStaff(@Valid @RequestBody requestCompanyWithStaffDTO: RequestCompanyWithStaffDTO) : ResponseEntity<CompanyDTO> {
+        return ResponseEntity.ok(companyService.createCompanyWithStaffs(requestCompanyWithStaffDTO))
     }
     @PutMapping("/{id}")
     fun updateCompany(@PathVariable id: Long, @Valid @RequestBody dto: RequestCompanyDTO) :

@@ -54,5 +54,5 @@ data class RequestCompanyWithStaffDTO(
         var webUrl: String?,
         @field:NotNull var status: Long,
         @field:NotNull var locations: List<Long>,
-        @field:NotNull var staffs: List<RequestStaffDTO>
+        @field:NotNull var staffs: List<RequestCompanyStaffDTO>
 )

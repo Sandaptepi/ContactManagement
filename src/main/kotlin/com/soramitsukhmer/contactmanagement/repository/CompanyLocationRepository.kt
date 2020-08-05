@@ -4,4 +4,6 @@ import com.soramitsukhmer.contactmanagement.domain.model.CompanyLocation
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface CompanyLocationRepository: JpaRepository<CompanyLocation,Long> {
+
+    fun findByCompanyId(companyId: Long): List<CompanyLocation>?
 }

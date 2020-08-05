@@ -5,7 +5,7 @@
 
     <!--SEQUENCE-->
     <changeSet author="sandap" id="create-staff-table-sequences">
-        <createSequence sequenceName="SEQ_STAFFS" startValue="10" incrementBy="1"/>
+        <createSequence sequenceName="SEQ_STAFFS" startValue="10" incrementBy="50"/>
     </changeSet>
     <!--TABLE-->
     <changeSet id="create_table_staffs" author="sandap">

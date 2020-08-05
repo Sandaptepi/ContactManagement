@@ -29,3 +29,10 @@ data class RequestStaffDTO(
         val position: String?,
         @field:NotNull val companyId: Long
 )
+
+data class RequestCompanyStaffDTO(
+        @field:NotEmpty var name: String,
+        @field:NotEmpty val gender: String,
+        val location: String?,
+        val position: String?
+)
